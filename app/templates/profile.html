@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}My Profile - IBDB{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Welcome, {{ user.email }}</h2>
+
+    <a href="{{ url_for('add_list') }}" class="btn btn-success mb-3">+ Create New List</a>
+
+    <!-- User's Book Lists -->
+    <h3>Your Book Lists</h3>
+    {% if lists %}
+        {% for list in lists %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">{{ list.name }} 
+                    {% if list.is_public %} 
+                        <span class="badge bg-success">Public</span> 
+                    {% else %} 
+                        <span class="badge bg-secondary">Private</span> 
+                    {% endif %}
+                </h5>
+                <p>{{ list.books|length }} books</p>
+
+                <!-- Edit & Delete Buttons -->
+                <a href="{{ url_for('edit_list', list_id=list.id) }}" class="btn btn-info">Edit</a>
+                <!-- Delete Book List (Using POST) -->
+                <form action="{{ url_for('delete_list', list_id=list.id) }}" method="POST" style="display:inline;">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+
+
+                <!-- View List Button -->
+                <a href="{{ url_for('view_list', list_id=list.id) }}" class="btn btn-primary">View List</a>
+
+                <!-- Sharing Link Button -->
+                <button class="btn btn-outline-secondary copy-link-btn" data-list-id="{{ list.id }}">
+                    Sharing Link
+                </button>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p>No book lists found.</p>
+    {% endif %}
+</div>
+
+<!-- JavaScript to Copy Share Link -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".copy-link-btn").forEach(button => {
+            button.addEventListener("click", function () {
+                const listId = this.getAttribute("data-list-id");
+                fetch(`/generate_share_link/${listId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.share_link) {
+                            navigator.clipboard.writeText(data.share_link).then(() => {
+                                alert("🔗 Link copied to clipboard!");
+                            });
+                        } else {
+                            alert("⚠ Error generating link.");
+                        }
+                    })
+                    .catch(() => alert("⚠ Unable to generate share link."));
+            });
+        });
+    });
+</script>
+{% endblock %}

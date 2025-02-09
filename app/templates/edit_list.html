@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Book List - IBDB{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Edit Book List</h2>
+
+    <form method="POST">
+        {{ form.hidden_tag() }}
+
+        <div class="form-group">
+            <label for="name">List Name:</label>
+            {{ form.name(class="form-control") }}
+        </div>
+
+        <div class="form-group">
+            <label>{{ form.is_public() }} Make this list public</label>
+        </div>
+
+        <hr>
+
+        <!-- Book Search -->
+        <h3>Search & Add Books</h3>
+        <input type="text" id="book-search" class="form-control" placeholder="Search books by title or author...">
+        <div id="search-results"></div>
+
+        <hr>
+
+        <!-- Selected Books -->
+        <h3>Books in This List</h3>
+        <ul id="selected-books-list" class="list-group">
+            {% for book in selected_books %}
+            <li class="list-group-item">
+                {{ book.title }} by {{ book.author }}
+                <input type="hidden" name="selected_books" value="{{ book.id }}">
+                <button type="button" class="btn btn-sm btn-danger remove-book">Remove</button>
+            </li>
+            {% endfor %}
+        </ul>
+
+        <hr>
+
+        <button type="submit" class="btn btn-success">Save Changes</button>
+        <a href="{{ url_for('profile') }}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const searchInput = document.getElementById("book-search");
+        const searchResults = document.getElementById("search-results");
+        const selectedBooksList = document.getElementById("selected-books-list");
+
+        searchInput.addEventListener("input", function () {
+            const query = searchInput.value.trim();
+            if (query.length < 2) {
+                searchResults.innerHTML = "";
+                return;
+            }
+
+            fetch(`/search_books?q=${query}`)
+                .then(response => response.json())
+                .then(data => {
+                    searchResults.innerHTML = "";
+                    data.forEach(book => {
+                        const bookItem = document.createElement("div");
+                        bookItem.classList.add("search-item");
+                        bookItem.innerHTML = `${book.title} by ${book.author} 
+                            <button type="button" class="btn btn-sm btn-success add-book" data-id="${book.id}" 
+                            data-title="${book.title}" data-author="${book.author}">Add</button>`;
+                        searchResults.appendChild(bookItem);
+                    });
+
+                    document.querySelectorAll(".add-book").forEach(button => {
+                        button.addEventListener("click", function (event) {
+                            event.preventDefault();  // ✅ Prevents form submission
+                            const bookId = this.getAttribute("data-id");
+                            const bookTitle = this.getAttribute("data-title");
+                            const bookAuthor = this.getAttribute("data-author");
+
+                            const existingBook = document.querySelector(`input[value="${bookId}"]`);
+                            if (!existingBook) {
+                                const listItem = document.createElement("li");
+                                listItem.classList.add("list-group-item");
+                                listItem.innerHTML = `${bookTitle} by ${bookAuthor}
+                                    <input type="hidden" name="selected_books" value="${bookId}">
+                                    <button type="button" class="btn btn-sm btn-danger remove-book">Remove</button>`;
+                                selectedBooksList.appendChild(listItem);
+
+                                listItem.querySelector(".remove-book").addEventListener("click", function () {
+                                    listItem.remove();
+                                });
+                            }
+                        });
+                    });
+                });
+        });
+
+        document.addEventListener("click", function (event) {
+            if (event.target.classList.contains("remove-book")) {
+                event.target.parentElement.remove();
+            }
+        });
+    });
+</script>
+{% endblock %}

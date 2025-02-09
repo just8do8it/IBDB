@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block title %}Search Results - IBDB{% endblock %}
+
+{% block content %}
+<h2>Search Results for "{{ query }}"</h2>
+
+<!-- Search Form -->
+<form action="{{ url_for('search') }}" method="GET" class="mb-4">
+    <input type="text" name="q" class="form-control mb-2" placeholder="Search..." value="{{ query }}">
+
+    <label>Filter by:</label>
+    <div class="row">
+        <div class="col-md-3">
+            <input type="number" name="year" class="form-control" placeholder="Year" value="{{ request.args.get('year', '') }}">
+        </div>
+        <div class="col-md-3">
+            <select name="genre" class="form-control">
+                {% for value, label in form.genre.choices %}
+                    <option value="{{ value }}" {% if request.args.get("genre") == value %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-3">
+            <select name="language" class="form-control">
+                {% for value, label in form.language.choices %}
+                    <option value="{{ value }}" {% if request.args.get("language") == value %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <!-- Sorting Options -->
+    <div class="row mt-2">
+        <div class="col-md-3">
+            <label>Sort by:</label>
+            <select name="sort_by" class="form-control">
+                <option value="title" {% if sort_by == "title" %}selected{% endif %}>Title</option>
+                <option value="author" {% if sort_by == "author" %}selected{% endif %}>Author</option>
+                <option value="year" {% if sort_by == "year" %}selected{% endif %}>Year</option>
+                <option value="rating" {% if sort_by == "rating" %}selected{% endif %}>Rating</option>
+                <option value="downloads" {% if sort_by == "downloads" %}selected{% endif %}>Downloads</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label>Order:</label>
+            <select name="order" class="form-control">
+                <option value="asc" {% if order == "asc" %}selected{% endif %}>Ascending</option>
+                <option value="desc" {% if order == "desc" %}selected{% endif %}>Descending</option>
+            </select>
+        </div>
+    </div>
+
+    <button class="btn btn-primary mt-2">Apply Filters</button>
+</form>
+
+<!-- Search Results -->
+{% if books %}
+    <div class="row">
+        {% for book in books %}
+            <div class="col-md-4">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <a href="{{ url_for('book_page', book_id=book.id) }}">{{ book.title }}</a>
+                        </h5>
+                        <p class="card-text">by {{ book.author }}</p>
+                        <p class="card-text"><small>Language: {{ book.language }}<br>Year: {{ book.year }}<br>Rating: {{ book.rating }}<br>Downloads: {{ book.downloads }}</small></p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>No results found.</p>
+{% endif %}
+{% endblock %}

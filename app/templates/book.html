@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ book.title }} - IBDB{% endblock %}
+
+{% block content %}
+<h2>{{ book.title }}</h2>
+<p><strong>Author:</strong> {{ book.author }}</p>
+<p><strong>Year:</strong> {{ book.year }}</p>
+<p><strong>Genre:</strong> {{ book.genre }}</p>
+<p><strong>Rating:</strong> {{ book.rating }}</p>
+<p><strong>Downloads:</strong> {{ book.downloads }}</p>
+<p>{{ book.description }}</p>
+
+<h3>Download</h3>
+<form action="{{ url_for('download_book', book_id=book.id) }}" method="POST">
+    <label>Email:</label>
+    <input type="email" name="email" class="form-control" required>
+    <button class="btn btn-success mt-2">Send Book</button>
+</form>
+
+<h3 class="mt-4">Reviews</h3>
+{% for review in book.reviews %}
+    <p><strong>{{ review.user.email }}</strong> rated: {{ review.rating }} / 5</p>
+    <p>{{ review.comment }}</p>
+    <hr>
+{% endfor %}
+
+{% if current_user.is_authenticated %}
+<form method="POST">
+    {{ form.hidden_tag() }}
+    <label>Rate this book (1-5):</label>
+    {{ form.rating(class="form-control") }}
+    <label>Comment:</label>
+    {{ form.comment(class="form-control") }}
+    <button type="submit" class="btn btn-primary mt-2">Submit Review</button>
+</form>
+{% else %}
+<p><a href="{{ url_for('login') }}">Login to leave a review.</a></p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Public Book Lists - IBDB{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Public Book Lists</h2>
+
+    <!-- Toggle: Show Only My Lists -->
+    <form method="GET" action="{{ url_for('public_lists') }}">
+        <label>
+            <input type="checkbox" name="show_my_lists" value="true" {% if show_my_lists %}checked{% endif %} onchange="this.form.submit()">
+            Show Only My Lists
+        </label>
+    </form>
+
+    <hr>
+
+    <!-- Display Public Lists -->
+    {% for list in lists %}
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5 class="card-title">{{ list.name }} 
+                {% if list.is_public %} <span class="badge bg-success">Public</span> {% else %} <span class="badge bg-secondary">Private</span> {% endif %}
+            </h5>
+            <p>{{ list.books|length }} books</p>
+            <p>Created by: {{ list.user.email }}</p>
+
+            <!-- Buttons for List Owner -->
+            {% if list.user_id == current_user.id %}
+                <a href="{{ url_for('edit_list', list_id=list.id) }}" class="btn btn-info">Edit</a>
+                <form action="{{ url_for('delete_list', list_id=list.id) }}" method="POST" style="display:inline;">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            {% endif %}
+
+            <!-- View List Button -->
+            <a href="{{ url_for('view_list', list_id=list.id) }}" class="btn btn-primary">View List</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
