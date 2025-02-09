@@ -1,9 +1,9 @@
-# **📖 IBDB - Internet Book Database**  
+**📖 IBDB - Internet Book Database**  
 *A Flask-based platform for finding, saving, and downloading PDF books.*
 
 ---
 
-## **🌟 Features**
+**🌟 Features**
 - 📚 **Book Search**: Search by title, author, description, tags, genre, language, and year.
 - 🎯 **Advanced Filtering**: Filter by rating, number of downloads, genre, language, and more.
 - 🔝 **Sorting Options**: Sort results by name, year, rating, and downloads in ascending or descending order.
@@ -18,7 +18,7 @@
 
 ---
 
-## **🚀 Technologies Used**
+**🚀 Technologies Used**
 | Tech | Purpose |
 |------|---------|
 | **Flask** | Web framework |
@@ -33,7 +33,7 @@
 
 ---
 
-## **📥 Installation**
+**📥 Installation**
 1️⃣ **Clone the Repository**
 ```sh
 git clone https://github.com/yourusername/IBDB.git
@@ -66,7 +66,7 @@ flask run
 
 
 
-## **📂 Project Structure**
+**📂 Project Structure**
 ```bash
 📁 IBDB/
 │── 📁 app/
@@ -88,22 +88,22 @@ flask run
 │── README.md             # Project documentation
 ```
 
-## **🔑 Authentication**
+**🔑 Authentication**
 Users must register and log in to create collections and download books.
 Passwords are securely hashed using bcrypt.
 
 
-## **🔍 Searching for Books**
+**🔍 Searching for Books**
 Users can search by keyword (title, author, description, tags).
 Filters available:
-✅ Genre
-✅ Language
-✅ Year
-✅ Rating
-✅ Number of Downloads
+- ✅ Genre
+- ✅ Language
+- ✅ Year
+- ✅ Rating
+- ✅ Number of Downloads
 
 
-## **📂 Managing Book Collections**
+**📂 Managing Book Collections**
 Users can create, edit, and delete their own public or private book lists.
 Collections can be sorted and filtered by name or date.
 Sharing feature: Generate a unique link to share collections.
@@ -111,12 +111,12 @@ Sharing feature: Generate a unique link to share collections.
 Users can rate and review books.
 Book ratings update dynamically based on user reviews.
 
-## **📥 Downloading Books**
+**📥 Downloading Books**
 Click "Download" to get the book as a PDF.
 Users can choose to send the book via email.
 
 
-## **🛠 Running Tests**
+**🛠 Running Tests**
 
 1️⃣ **Run all tests**
 ```sh
@@ -135,27 +135,27 @@ coverage html
 Open htmlcov/index.html to view the report.
 
 
-## **🎨 UI Design**
+**🎨 UI Design**
 Modern, elegant design inspired by luxury interior aesthetics.
 Color theme: Dark green, gold accents, and modern gradients.
 Fully responsive for desktop & mobile.
 Consistent UI across all pages (collections, search, books, profile).
 
-## **🚀 Future Features**
-📌 User-generated book uploads (pending moderation).
-📌 Book recommendations based on reading history.
-📌 API for book search & download.
-📌 Dark mode toggle.
-📌 OAuth (Google, GitHub) Login.
+**🚀 Future Features**
+- 📌 User-generated book uploads (pending moderation).
+- 📌 Book recommendations based on reading history.
+- 📌 API for book search & download.
+- 📌 Dark mode toggle.
+- 📌 OAuth (Google, GitHub) Login.
 
 
-## **👨‍💻 Contributors**
+**👨‍💻 Contributors**
 💡 Project Lead: Your Name
 💡 Developers: Team Members' Names
 
-## **🚀 Want to contribute? Open an issue or submit a pull request!**
+**🚀 Want to contribute? Open an issue or submit a pull request!**
 
-## **📜 License**
+**📜 License**
 This project is licensed under the MIT License. See LICENSE.md for details.
 
-## **🎉 Thank you for using IBDB! Happy Reading! 📚**
+**🎉 Thank you for using IBDB! Happy Reading! 📚**
