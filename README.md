@@ -1,4 +1,4 @@
-**📖 IBDB - Internet Book Database**  
+## 📖 IBDB - Internet Book Database
 *A Flask-based platform for finding, saving, and downloading PDF books.*
 
 ---
